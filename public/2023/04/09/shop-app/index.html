@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://182.44.49.100:34/images/2023/05/06/fluid.png">
+  <link rel="icon" href="http://182.44.49.100:34/images/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jabin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="完成了一个 Vue2 的的练手项目，记录部分项目开发流程和技术点 创建 Vue 项目 创建vue项目：在根目录cmd vue create xxx 创建vue项目时就勾上Router，免得开发时再手动安装 vue-router 插件包。同理把 css preprocess也勾选上，免得手动安装 less loader 包  eslint常见报错类型 组件的命名必须是多个单词的驼峰命名 组件通过 i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue2电商练手项目">
+<meta property="og:url" content="http://example.com/2023/04/09/shop-app/index.html">
+<meta property="og:site_name" content="Mongobin">
+<meta property="og:description" content="完成了一个 Vue2 的的练手项目，记录部分项目开发流程和技术点 创建 Vue 项目 创建vue项目：在根目录cmd vue create xxx 创建vue项目时就勾上Router，免得开发时再手动安装 vue-router 插件包。同理把 css preprocess也勾选上，免得手动安装 less loader 包  eslint常见报错类型 组件的命名必须是多个单词的驼峰命名 组件通过 i">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/99a042307be2e6e58cd703214d0c07a4.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/7801634e91006adb2b0a329401f8cbba.png">
+<meta property="article:published_time" content="2023-04-09T07:07:15.000Z">
+<meta property="article:modified_time" content="2023-05-06T09:09:05.784Z">
+<meta property="article:author" content="Jabin">
+<meta property="article:tag" content="vue2">
+<meta property="article:tag" content="电商项目">
+<meta property="article:tag" content="vuex">
+<meta property="article:tag" content="vue-router">
+<meta property="article:tag" content="mock">
+<meta property="article:tag" content="代理">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://182.44.49.100:34/images/2023/05/06/99a042307be2e6e58cd703214d0c07a4.png">
+  
+  
+  
+  <title>vue2电商练手项目 - Mongobin</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"http://182.44.49.100:34/images/2023/05/06/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":false,"baidu":"103e72537b3063b8cce2f0ffde4ac39c","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9pLbLVOPyiwzNblgc6TJZhNZ-9Nh9j0Va","app_key":"G6QQBTQciP4LO2OHPGWTQLT3","server_url":"https://9plblvop.lc-cn-e1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?103e72537b3063b8cce2f0ffde4ac39c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mongobin</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://182.44.49.100:34/images/2023/05/06/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="vue2电商练手项目"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Jabin
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-04-09 15:07" pubdate>
+          2023年4月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">vue2电商练手项目</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><em>完成了一个 Vue2 的的练手项目，记录部分项目开发流程和技术点</em></p>
+<h3 id="创建-Vue-项目"><a href="#创建-Vue-项目" class="headerlink" title="创建 Vue 项目"></a>创建 Vue 项目</h3><ul>
+<li>创建vue项目：在根目录cmd <code>vue create xxx</code></li>
+<li>创建vue项目时就勾上Router，免得开发时再手动安装 vue-router 插件包。同理把 css preprocess也勾选上，免得手动安装 less loader 包</li>
+</ul>
+<h3 id="eslint常见报错类型"><a href="#eslint常见报错类型" class="headerlink" title="eslint常见报错类型"></a>eslint常见报错类型</h3><ul>
+<li>组件的命名必须是<strong>多个</strong>单词的驼峰命名</li>
+<li>组件通过 <code>import</code> 引入后必须注册，注册后必须使用，变量、方法同理</li>
+<li><code>import</code> 引入组件的文件时<strong>不能</strong>带上 .vue 后缀</li>
+</ul>
+<h3 id="文件树规范"><a href="#文件树规范" class="headerlink" title="文件树规范"></a>文件树规范</h3><ul>
+<li><p>node_modules 是包裹项目依赖的各个包的文件夹</p>
+</li>
+<li><p>public 中存放的是<strong>静态页面</strong> index.html （vue和react一般用来开发单页面应用，单页面应用自然要有一个html文件）和一些<strong>静态资源</strong>（图片）。放在public文件夹的资源在 webpack 打包时会原封不动的放到dist文件夹中</p>
+</li>
+<li><p>src 意为<strong>源码</strong>，顾名思义该目录是开发者写代码的文件夹</p>
+<ul>
+<li>assets 也是放置<strong>静态资源</strong>（一般放置多个组件共用的静态资源）。与 public 不同的是，放置在 assets 文件夹中的静态资源，在webpack打包时会被当做一个模块，打包在 js 文件里</li>
+<li>components 一般放置的是<strong>非路由组件</strong>（全局组件），不管跳转到哪个 page 页面上都会有的组件，通常以 html 标签的方式使用</li>
+<li>pages 放置<strong>路由组件</strong>，即经路由跳转到的组件，通常用 <code>router-view</code> 来使用</li>
+<li>router 项目当中配置的<strong>路由‘器’</strong>放置在 router 文件夹中。</li>
+<li>App.vue 是项目中的<strong>唯一根组件</strong></li>
+<li>main.js 是程序的入口文件，也是整个程序当中最先执行的文件</li>
+</ul>
+</li>
+<li><p>babel.config.js 是 babel 的配置文件。可以把 babel 理解为翻译官，负责把 ES6 语法翻译为 ES5 兼容性更好</p>
+</li>
+<li><p>vue.confg.js 是 vue 项目的可选配置文件，运行时会被自动加载。用于配置打包dist文件夹的路径、webpack、Babel、eslint的设置等等，详见<a target="_blank" rel="noopener" href="https://links.jianshu.com/go?to=https://cli.vuejs.org/zh/config/%23">https://cli.vuejs.org/zh/config/#</a></p>
+</li>
+<li><p>package.json 可以理解为是项目的身份证，记录着项目的信息（项目叫什么，版本是多少，运行脚本是什么，依赖有哪些）</p>
+</li>
+<li><p>package-lock.json 缓存性文件，告诉我项目的依赖包是从哪里下载的</p>
+</li>
+<li><p>readme.md 说明性的文件</p>
+</li>
+</ul>
+<h3 id="路由相关"><a href="#路由相关" class="headerlink" title="路由相关"></a>路由相关</h3><p><strong>使用路由的流程</strong></p>
+<p>​        在 index.js 引入 vue-router 插件 <strong>=&gt;</strong> Vue.use() 注册引用的插件 <strong>=&gt;</strong> 定义路由配置 <strong>=&gt;</strong> 在main.js中引入定好的路由 <strong>=&gt;</strong> 把引入的路由作为根组件的选项添加进去。</p>
+<ul>
+<li><p>前端的路由表现为 url : component 的键值对，这种 component 被称为路由组件。</p>
+</li>
+<li><p>在使用时一定要<strong>注册路由</strong>：在 main.js 中用 <code>import router from &#39;@/router/index.js&#39; </code> 引入 <code>router</code> ，并将其添加到 Vue 根组件的选项上。</p>
+</li>
+<li><p>注册完路由，会发生神奇的事情，不管是非路由组件还是路由组件，他们身上都会获得 <code>$route</code> 和 <code>$router</code> 属性。<code>$route</code> ：一般获取<strong>路由信息</strong>（路径、query、params，meta），<code>$router</code> 是<strong>路由操作</strong>对象，用于实现编程式导航进行路由跳转（push | replace）。</p>
+</li>
+<li><p><strong>路由重定向</strong><code>&#123;path: &#39;/&#39;, redirect: &#39;/home&#39;&#125;  </code> ，打开域名直接跳转到首页</p>
+</li>
+<li><p>路由的跳转分两种：</p>
+<ul>
+<li><p>声明式导航，用 <code>router-link</code> 代替 <code>&lt;a&gt;...&lt;/a&gt;</code> 用户点击，直接进行路由跳转    </p>
+</li>
+<li><p>编程式导航，用 <code>$router.push()</code> 和 <code>$router.replace()</code> 进行路由跳转。比如，用户点击登录时，我们不希望直接进行跳转，而是先进行账户验证后再发生跳转。  在跳转发生前后做一些动作，这就是编程式导航的典型应用场景</p>
+</li>
+</ul>
+</li>
+<li><p>路由重定向：将一个 url 重定向为指向另一个 url。</p>
+</li>
+<li><p><strong>路由元信息</strong>：他是一个Object。有时，你可能希望将任意<strong>信息附加</strong>到路由上，如过渡名称、谁可以访问路由、在该路由下那些组件隐藏等。这些事情可以通过接收属性对象的<code>meta</code>属性来实现，并且它可以在路由地址和导航守卫上都被访问到。</p>
+</li>
+<li><p><strong>路由传参</strong>分两种：</p>
+<ul>
+<li>params参数：实现<strong>动态路由</strong>，必须在路由的 path 处添加 <code>:/xxx</code> 的占位符。<ul>
+<li>当路由的path里设置了占位符，默认是必须传 params 参数的。如果路由跳转时却没有提供 params 参数，则跳转后的 url 中就会有 url 路径缺失的现象，这当然不是我们希望看到的。所以，尽量在路由中定义占位符时加上一个问号 <code>:/xxx?</code> 代表着 params 参数可传可不传。</li>
+</ul>
+</li>
+<li>query参数：即<code>path?xxx=1&amp;xxx=2</code>这样用于搜索的参数。</li>
+</ul>
+<blockquote>
+<p>当需要路由传参时，推荐使用命名路由的name进行路由检索，当然这<strong>只能</strong>用于push的<strong>对象参数</strong>（另一种原始的参数是字符串参数）。</p>
+<p>另外要注意：push的对象参数里，path 和 params是<strong>不可同时使用</strong>的，如果要传params，必须用name来指定路由</p>
+</blockquote>
+<ul>
+<li>给<strong>路由组件传递props</strong>：在路由定义处设置，常用函数式传递，既能传递 params 和query参数又能传递自定义数据。</li>
+</ul>
+</li>
+</ul>
+<h3 id="页面组件结构"><a href="#页面组件结构" class="headerlink" title="页面组件结构"></a>页面组件结构</h3><p>典型的上中下结构</p>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/99a042307be2e6e58cd703214d0c07a4.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="组件结构"></p>
+<h3 id="技术点"><a href="#技术点" class="headerlink" title="技术点"></a>技术点</h3><p><img src="http://182.44.49.100:34/images/2023/05/06/7801634e91006adb2b0a329401f8cbba.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="技术点"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/vue2/" class="category-chain-item">vue2</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue2/">#vue2</a>
+      
+        <a href="/tags/%E7%94%B5%E5%95%86%E9%A1%B9%E7%9B%AE/">#电商项目</a>
+      
+        <a href="/tags/vuex/">#vuex</a>
+      
+        <a href="/tags/vue-router/">#vue-router</a>
+      
+        <a href="/tags/mock/">#mock</a>
+      
+        <a href="/tags/%E4%BB%A3%E7%90%86/">#代理</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>vue2电商练手项目</div>
+      <div>http://example.com/2023/04/09/shop-app/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jabin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年4月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/05/05/broswerQuestions/" title="事件循环和消息队列(三)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">事件循环和消息队列(三)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/30/eventLoop/" title="事件循环和消息队列（二）">
+                        <span class="hidden-mobile">事件循环和消息队列（二）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"9pLbLVOPyiwzNblgc6TJZhNZ-9Nh9j0Va","appKey":"G6QQBTQciP4LO2OHPGWTQLT3","path":"window.location.pathname","placeholder":"快来参与评论吧~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="#" target="_self" rel="nofollow noopener"><span>🥝Jabin</span></a> <i class="iconfont icon-love"></i> <a href="#" target="_self" rel="nofollow noopener"><span>SunnyZ🥝</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+    
+
+      
+        
+          <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+              <span id="leancloud-site-pv"></span>
+               次
+          </span>
+          
+            
+                
+
+                  
+</div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

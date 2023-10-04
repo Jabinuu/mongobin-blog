@@ -1,0 +1,856 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="http://182.44.49.100:34/images/2023/05/06/fluid.png">
+  <link rel="icon" href="http://182.44.49.100:34/images/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jabin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="前言在讲述事件循环和消息队列之前，需要了解 JS 的单线程执行机制，JS 的执行是从上到下依次执行的，这些便是同步任务，而 ES6 引入了 Promise 对象，使得异步任务开始频频出现在 JS 的代码中。 异步任务不同于顺序执行的同步任务，他对于 JS 运行时来说是一个黑盒，无法预知他究竟什么时候会被执行，因为这取决于异步任务何时从消息队列中出队执行，而消息队列中的异步任务是否出队，则与事件循环">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件循环和消息队列（一）">
+<meta property="og:url" content="http://example.com/2023/03/29/Broswer/index.html">
+<meta property="og:site_name" content="Mongobin">
+<meta property="og:description" content="前言在讲述事件循环和消息队列之前，需要了解 JS 的单线程执行机制，JS 的执行是从上到下依次执行的，这些便是同步任务，而 ES6 引入了 Promise 对象，使得异步任务开始频频出现在 JS 的代码中。 异步任务不同于顺序执行的同步任务，他对于 JS 运行时来说是一个黑盒，无法预知他究竟什么时候会被执行，因为这取决于异步任务何时从消息队列中出队执行，而消息队列中的异步任务是否出队，则与事件循环">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329214757221.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329220338191.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/htmlDOM.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/_20230411173336.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329230708934.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/_20230411174231.png">
+<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/3787d04fe1672d3115116a6d2125f964.png">
+<meta property="article:published_time" content="2023-03-29T15:16:15.000Z">
+<meta property="article:modified_time" content="2023-05-06T09:19:05.731Z">
+<meta property="article:author" content="Jabin">
+<meta property="article:tag" content="浏览器架构">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png">
+  
+  
+  
+  <title>事件循环和消息队列（一） - Mongobin</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"http://182.44.49.100:34/images/2023/05/06/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":false,"baidu":"103e72537b3063b8cce2f0ffde4ac39c","google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"9pLbLVOPyiwzNblgc6TJZhNZ-9Nh9j0Va","app_key":"G6QQBTQciP4LO2OHPGWTQLT3","server_url":"https://9plblvop.lc-cn-e1-shared.com","path":"window.location.pathname","ignore_local":true}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+    <!-- Baidu Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?103e72537b3063b8cce2f0ffde4ac39c";
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Mongobin</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('http://182.44.49.100:34/images/2023/05/06/createBlog.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="事件循环和消息队列（一）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Jabin
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-29 23:16" pubdate>
+          2023年3月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">事件循环和消息队列（一）</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在讲述事件循环和消息队列之前，需要了解 JS 的单线程执行机制，JS 的执行是从上到下依次执行的，这些便是同步任务，而 ES6 引入了 Promise 对象，使得异步任务开始频频出现在 JS 的代码中。</p>
+<p>异步任务不同于顺序执行的同步任务，他对于 JS 运行时来说是一个黑盒，无法预知他究竟什么时候会被执行，因为这取决于异步任务何时从消息队列中出队执行，而消息队列中的异步任务是否出队，则与事件循环机制直接相关。</p>
+<h1 id="从多进程-process-和单线程-thread-谈起"><a href="#从多进程-process-和单线程-thread-谈起" class="headerlink" title="从多进程(process)和单线程(thread)谈起"></a>从多进程(process)和单线程(thread)谈起</h1><p>人们使用的现代浏览器都是多进程的应用程序，而运行在浏览器上的 JS 代码是单线程的。</p>
+<h2 id="浅谈Chrome浏览器架构"><a href="#浅谈Chrome浏览器架构" class="headerlink" title="浅谈Chrome浏览器架构"></a>浅谈Chrome浏览器架构</h2><p>​    如果自己设计一个浏览器，浏览器可以是哪种架构呢？</p>
+<ul>
+<li>单进程架构（线程间进行通信）</li>
+<li>多进程架构（进程间 IPC (Inter-Process Communication)通信）</li>
+</ul>
+<p>如果你的浏览器要以单进程架构进行设计，需要在一个进程内实现网络、调度、存储、IO设备、渲染、插件等任务，当然你可以把这些任务分为若干个线程去执行，形成单进程多线程的浏览器架构。</p>
+<p>但是由于这些任务在现在操作系统中越来越复杂，例如把网络、存储、渲染这些任务放在一个线程中，执行效率和性能越来越低下（比如有一些网页的代码存在内存泄露，即便关闭这些网页线程，进程中的这块内存也无法被回收，除非关闭浏览器，否则越用越卡），且无法再向下拆分出类似线程的子空间，因为线程已经是最小的执行单位。</p>
+<p>因此，为了强化浏览器的各个复杂功能，出现了多进程架构的浏览器，可以将网络、存储、渲染、IO、插件这些复杂任务分配给一个个单独的进程，这样每个进程又能向下拆分出多个线程，极大程度上强化了浏览器。</p>
+<h3 id="理解Chrome的多进程架构"><a href="#理解Chrome的多进程架构" class="headerlink" title="理解Chrome的多进程架构"></a>理解Chrome的多进程架构</h3><p>Chrome也是基于多进程架构的现代浏览器，Chrome的主要进程组成如下：</p>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="image-20230329211758826"></p>
+<ul>
+<li><p>Browser 进程：Tab之外的一切都有该进程处理。负责地址栏、书签栏、前进后退、网络请求、文件访问等；</p>
+</li>
+<li><p>Renderer 进程：负责一个 Tab 内所有和网页渲染有关的事情，是最核心的进程；</p>
+</li>
+<li><p>Plugin 进程：负责 Chrome 插件相关的任务；</p>
+</li>
+<li><p>GPU 进程：GPU进程与其他浏览器进程相隔离处理GPU任务，把浏览器的页面内容绘制到屏幕上；</p>
+<blockquote>
+<p>所有应用程序都要在OS的调度下基于CPU和GPU的计算才能运行。因为GPU要处理多个应用程序的的请求，浏览器的的GPU进程只是一个分量。GPU擅长处理图形，因此提供GPU计算的应用程序可以实现快速渲染和平滑交互。</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329214757221.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="image-20230329214757221"></p>
+<p>Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 Tab 就意味着有三个不同的 Renderer 进程这样可以保证多个 Tab 之间互不影响，即使其中一个 Tab 没有响应，也不影响其他 Tab 的正常执行。然而，由于进程是 OS 中拥有资源的独立单位，多个 Tab 之间的数据是非共享的，这也意味着多个 Tab 都会有相同的 V8引擎初始化数据，这意味着更多的内存使用。</p>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329220338191.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="image-20230329220338191"></p>
+<h3 id="了解-Browser-浏览器进程"><a href="#了解-Browser-浏览器进程" class="headerlink" title="了解 Browser 浏览器进程"></a>了解 Browser 浏览器进程</h3><p>简单来说，在浏览器中，Tab之外的一切都归浏览器进程所接管，它包含3个主要的线程：</p>
+<ul>
+<li>UI thread UI线程：负责绘制和管理浏览器的按钮和输入框区域。</li>
+<li>Network thread 网络线程：负责处理网络堆栈以从互联网接收数据</li>
+<li>Storage thread 存储线程：负责控制文件访问 </li>
+</ul>
+<p>而根据浏览器的优化策略，这三个线程往往会独立为三个进程。</p>
+<p>现在让我们来模拟一个在地址栏输入网址，并将网页呈现在浏览器上的过程</p>
+<ol>
+<li><p>用户在地址栏中键入字符串，UI 线程会识别该字符串是 URL 还是搜索关键词。</p>
+<blockquote>
+<p>Chrome中的地址既可以访问网页，同时又是个搜索框，这里假设我们输入的是 URL。</p>
+</blockquote>
+</li>
+<li><p>UI 线程通知网络线程开始进行导航，发起网络请求</p>
+</li>
+<li><p>读取响应数据，如果响应的是 HTML 文件，那么下一步会将该数据传递给渲染进程；但如果响应数据是一个压缩包或其它类型的文件，那么就意味着我们发送的是下载请求，所以需要把数据传递给下载管理器</p>
+</li>
+<li><p>UI线程负责找到渲染进程，通知它要进行网页渲染</p>
+</li>
+<li><p>此时数据和渲染进程都已经准备好，浏览器进程和渲染进程开启 IPC 传递数据，导航部分完成，你会发现tab由原网页台跳转到空白页面，然后开始边传输HTML 边进行网页渲染。</p>
+</li>
+</ol>
+<h3 id="了解最为重要的-Renderer-渲染进程"><a href="#了解最为重要的-Renderer-渲染进程" class="headerlink" title="了解最为重要的 Renderer 渲染进程"></a>了解最为重要的 Renderer 渲染进程</h3><p>渲染进程主要包括4个线程：</p>
+<ul>
+<li>Main thread 主线程：执行JS、下载资源、计算样式、进行布局、绘制合成</li>
+<li>Raster thread 光栅线程</li>
+<li>Compositor thread 合成线程</li>
+<li>Worker thread 工作者线程</li>
+</ul>
+<h4 id="主线程的功能"><a href="#主线程的功能" class="headerlink" title="主线程的功能"></a>主线程的功能</h4><ul>
+<li><p>执行 JS：主线程在遇到 <code>&lt;script&gt;</code> 标签时会阻塞HTML文档的解析，并必须先下载、解析和执行js代码，why？因为 js 可以用 <code>document.write()</code>之类的东西改变 DOM 结构。这就是为什么会暂停HTML的解析，并等待js代码执行完毕后才能恢复。</p>
+</li>
+<li><p>下载外部资源：如果HTML中由需要加载<strong>外部资源</strong>的标签，这在解析HTML构建DOM树之前会由<strong>预加载扫描线程</strong>检测到，并<strong>提前</strong>利用 Browser 线程的 Network 线程来下载<code>&lt;img/&gt;</code>、CSS和 JS的<code>&lt;link&gt;</code>等渲染DOM需要的外部资源文件，这减少了解析 HTML 的阻塞时间</p>
+</li>
+<li><p>解析HTML：由 HTML<strong>解析器</strong>解析 HTML 内容，首先由<strong>分词器</strong>检测出各个标签名，我们称他们为token，然后利用token栈和括号匹配算法，构建出DOM树。同时会根据外部、内部和内联 CSS 样式计算得到 CSSOM 树。</p>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/htmlDOM.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="根据html文档生成DOM树"></p>
+</li>
+<li><p>计算CSS样式：主线程根据 CSSOM 树进行CSS属性值的计算，并将计算后的样式添加到DOM树的对应DOM节点上。</p>
+<blockquote>
+<p>:boat: 计算（最终）样式（computed style）:是把继承、层叠关系理清，并且把所有CSS属性都赋值之后的CSS样式。</p>
+<p>:warning:HTML本质上只是提供了<strong>语义化的标签</strong>。为何div、p标签是块盒，而span标签却是行盒？根本原因是浏览器的源码中，设置了<strong>浏览器默认样式</strong>，而这些标签分别被设置为了<code>display:block </code>和 <code>display:inline</code></p>
+</blockquote>
+</li>
+<li><p>确定<strong>布局</strong>结构<em>Layout</em>：只有DOM节点和和它的样式可不够，还需要确定他们之间的布局关系，并构建与DOM树类似的<strong>布局树</strong>，比如在页面上的位置、盒子的尺寸大小的信息</p>
+<blockquote>
+<p>:label:布局树通常情况下与DOM树结构并不相同。由于布局树只考虑存在位置和尺寸这样的<strong>几何信息</strong>的DOM元素，所以<code>display:none</code>的DOM元素在构建布局树时是不被考虑的，类似的，还有一些伪元素，匿名行盒，匿名块盒…..</p>
+<p>:man_teacher: W3C规定：标签的文本必须被包含在行盒中；行盒和块盒不能相邻。因此用匿名行盒和匿名块盒来适应这个规定</p>
+</blockquote>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/_20230411173336.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="微信截图_20230411173336"></p>
+</li>
+<li><p><strong>分层</strong>（Layer）：主线程会使用一套复杂的策略对整个布局树中进行分层。分层的好处在于，将来某一个层发生改变后，仅会对该层进行后续处理，从而提升效率</p>
+<blockquote>
+<p>滚动条、层叠上下文（z-index）、transform、opacity 等样式都会或多或少的影响分层结果，也可以通过<code>will-change</code>属性更大程度的影响分层结构。</p>
+<p>分层不是越多越好，层数太多会导致占用大量的内存空间，因为浏览器会根据内存和效率权衡分层的数量。</p>
+</blockquote>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329230708934.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="image-20230329230708934"></p>
+</li>
+<li><p><strong>计算绘制指令集</strong>（paint）：主线程会为每个层单独产生绘制指令集，用于描述这个层的内容该如何一步步地画出来。完成此步后，主线程将绘制指令集交付给合成线程</p>
+<p><img src="http://182.44.49.100:34/images/2023/05/06/_20230411174231.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="微信截图_20230411174231"></p>
+</li>
+</ul>
+<h4 id="合成器线程"><a href="#合成器线程" class="headerlink" title="合成器线程"></a>合成器线程</h4><p>​    一旦确定了<strong>绘制指令集</strong>，主线程就会将该信息提交给合成器线程。然后，合成线程将对每个层进行分块并光栅化。一个层可以比视口要大，所以合成器线程将它们划分为瓦片（图块），并将每个瓦片发送到GPU进程，完成光栅化，并且在这个过程中优先光栅化靠近视口的区域，紧接着再去光栅化页面的其他区域。（tiling和raster）</p>
+<blockquote>
+<p>将这些信息转换为屏幕上的像素称为光栅化</p>
+</blockquote>
+<p>​    光栅化完成后，GPU进程将生成的位图交回给合成线程，合成线程收到每个层、每个块的位图之后，生成一个个的指引（quad）信息。指引信息会表示出每个位图应该滑到屏幕的那个位置，以及会考虑到旋转、缩放等变形。然后合成线程将 quad 提交给GPU进程，由GPU进程产生系统调用，提交给GPU硬件，完成最终的屏幕成像。（draw）</p>
+<blockquote>
+<p>由于变形操作是在合成线程中执行的，与渲染主线程无关，这就是  transform 效率高的原因</p>
+</blockquote>
+<ul>
+<li>浏览器滚动时，合成线程会创建一个新的合成帧发送给 GPU，以显示到屏幕上，所以即便主线程卡死，也不影响页面滚动。</li>
+<li>合成线程工作与主线程无关，不用等待样式计算和 js 的执行，因此合成线程相关的动画比涉及到主线程重新计算样式和执行 js 的动画更加流畅</li>
+</ul>
+<h4 id="浏览器的渲染过程流程图"><a href="#浏览器的渲染过程流程图" class="headerlink" title="浏览器的渲染过程流程图"></a>浏览器的渲染过程流程图</h4><p><img src="http://182.44.49.100:34/images/2023/05/06/3787d04fe1672d3115116a6d2125f964.png" srcset="http://182.44.49.100:34/images/2023/05/06/loading.gif" lazyload alt="渲染流程图"></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/inside-browser-part1/">Inside look at modern web browser (part 1)</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904193367474184">浅谈浏览器架构、单线程js、事件循环、消息队列、宏任务和微任务</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/inside-browser-part2/">Inside look at modern web browser (part 2)</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/inside-browser-part3/">Inside look at modern web browser (part 3)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/">#浏览器架构</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>事件循环和消息队列（一）</div>
+      <div>http://example.com/2023/03/29/Broswer/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jabin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/03/30/eventLoop/" title="事件循环和消息队列（二）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">事件循环和消息队列（二）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/20/createBlog/" title="从0开始在云服务器上搭建Hexo博客">
+                        <span class="hidden-mobile">从0开始在云服务器上搭建Hexo博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"9pLbLVOPyiwzNblgc6TJZhNZ-9Nh9j0Va","appKey":"G6QQBTQciP4LO2OHPGWTQLT3","path":"window.location.pathname","placeholder":"快来参与评论吧~","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="#" target="_self" rel="nofollow noopener"><span>🥝Jabin</span></a> <i class="iconfont icon-love"></i> <a href="#" target="_self" rel="nofollow noopener"><span>SunnyZ🥝</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+    
+
+      
+        
+          <span id="leancloud-site-pv-container" style="display: none">
+            总访问量 
+              <span id="leancloud-site-pv"></span>
+               次
+          </span>
+          
+            
+                
+
+                  
+</div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
