@@ -22,7 +22,7 @@ favicon: https://imgnothing.top/images/fluid.png
 
 # 用于苹果设备的图标
 # Icon for Apple touch
-apple_touch_icon: https://imgnothing.top/images/2023/05/06/fluid.png
+apple_touch_icon: https://imgnothing.top/images/fluid.png
 
 # 浏览器标签页中的标题分隔符，效果： 文章名 - 站点名
 # Title separator in browser tab, eg: article - site
@@ -301,7 +301,7 @@ lazyload:
 
   # 加载时的占位图片
   # The placeholder image when loading
-  loading_img: https://imgnothing.top/images/2023/05/06/loading.gif
+  loading_img: https://imgnothing.top/images/loading.gif
 
   # 开启后懒加载仅在文章页生效，如果自定义页面需要使用，可以在 Front-matter 里指定 `lazyload: true`
   # If true, only enable lazyload on the post page. For custom pages, you can set 'lazyload: true' in front-matter
@@ -452,7 +452,7 @@ footer:
     # 公安备案的编号，用于URL跳转查询
     police_code: 12345678
     # 公安备案的图片. 为空时不显示备案图片
-    police_icon: https://imgnothing.top/images/2023/05/06/police_beian.png
+    police_icon: https://imgnothing.top/images/police_beian.png
 
 
 #---------------------------
@@ -462,7 +462,7 @@ footer:
 index:
   # 首页 Banner 头图，可以是相对路径或绝对路径，以下相同
   # Path of Banner image, can be a relative path or an absolute path, the same on other pages
-  banner_img: https://imgnothing.top/images/2023/05/06/banner.png
+  banner_img: https://imgnothing.top/images/banner.png
 
   # 头图高度，屏幕百分比
   # Height ratio of banner image
@@ -534,7 +534,7 @@ index:
 # Post Page
 #---------------------------
 post:
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 70
   banner_mask_alpha: 0.3
 
@@ -888,7 +888,7 @@ giscus:
 # Archive Page
 #---------------------------
 archive:
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -899,7 +899,7 @@ archive:
 #---------------------------
 category:
   enable: true
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -928,7 +928,7 @@ category:
 #---------------------------
 tag:
   enable: true
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 80
   banner_mask_alpha: 0.3
   tagcloud:
@@ -945,10 +945,10 @@ tag:
 #---------------------------
 about:
   enable: true
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  avatar: https://imgnothing.top/images/2023/05/06/avatar.png
+  avatar: https://imgnothing.top/images/avatar.png
   name: "Jabin"
   intro: "一个菜鸟前端选手😰"
   # 更多图标可从 https://hexo.fluid-dev.com/docs/icon/ 查找，`class` 代表图标的 css class，添加 `qrcode` 后，图标不再是链接而是悬浮二维码
@@ -967,7 +967,7 @@ about:
 # Custom Page through `hexo new page`
 #---------------------------
 page:
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -975,10 +975,10 @@ page:
 #---------------------------
 # 404页
 # 404 Page
-#---------------------------
+#---------------------------s
 page404:
   enable: true
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 85
   banner_mask_alpha: 0.3
   # 重定向到首页的延迟(毫秒)
@@ -992,7 +992,7 @@ page404:
 #---------------------------
 links:
   enable: true
-  banner_img: https://imgnothing.top/images/2023/05/06/default.png
+  banner_img: https://imgnothing.top/images/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
   # 友链的成员项
@@ -1019,7 +1019,7 @@ links:
 
   # 当成员头像加载失败时，替换为指定图片
   # When the member avatar fails to load, replace the specified image
-  onerror_avatar: https://imgnothing.top/images/2023/05/06/avatar.png
+  onerror_avatar: https://imgnothing.top/images/avatar.png
 
   # 友链下方自定义区域，支持 HTML，可插入例如申请友链的文字
   # Custom content at the bottom of the links
