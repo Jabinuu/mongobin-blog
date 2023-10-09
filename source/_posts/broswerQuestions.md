@@ -3,7 +3,7 @@ title: 事件循环和消息队列(三)
 date: 2023-05-05 16:43:55
 tags: [浏览器原理,事件循环]
 categories: [面试题]
-banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
+banner_img: https://imgnothing.top/images/createBlog.png
 comment: true
 ---
 

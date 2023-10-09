@@ -23,15 +23,15 @@
 <meta property="og:site_name" content="Mongobin">
 <meta property="og:description" content="包管理工具最近接触了 vben-admin 这个开源项目，发现使用的包管理工具是 pnpm，而我之前一直都是用的 npm，想来不知他们有何差别，便去网上找了些资料和文档学习一下。 目前流行的包管理工具：npm，yarn，pnpm。pnpm的主要优势在于节省磁盘空间，install命令执行速度快，解决了幽灵依赖。 node_modules 的目录结构嵌套式在早期的npm@2版本中，他的 node_m">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/f1e85fbacc206f75936444f322c83c96.png">
+<meta property="og:image" content="https://imgnothing.top/images/f1e85fbacc206f75936444f322c83c96.png">
 <meta property="article:published_time" content="2023-05-05T09:05:37.000Z">
-<meta property="article:modified_time" content="2023-05-06T09:06:28.649Z">
+<meta property="article:modified_time" content="2023-10-09T14:48:09.163Z">
 <meta property="article:author" content="Jabin">
 <meta property="article:tag" content="pnpm">
 <meta property="article:tag" content="幽灵依赖">
 <meta property="article:tag" content="包管理工具">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://182.44.49.100:34/images/2023/05/06/f1e85fbacc206f75936444f322c83c96.png">
+<meta name="twitter:image" content="https://imgnothing.top/images/f1e85fbacc206f75936444f322c83c96.png">
   
   
   
@@ -356,10 +356,10 @@
 
 <h2 id="pnpm的解决方案"><a href="#pnpm的解决方案" class="headerlink" title="pnpm的解决方案"></a>pnpm的解决方案</h2><h3 id="硬链接和软链接"><a href="#硬链接和软链接" class="headerlink" title="硬链接和软链接"></a>硬链接和软链接</h3><p>硬链接（hard link）和软连接，又称符号链接（symbolic link）是操作系统中两种共享文件的链接方式。</p>
 <p>硬链接通过直接指向文件的索引块从而实现文件共享；软连接则创建一个新的文件（eg. 快捷方式），文件内容是要共享的文件的硬链接，示意图如下：</p>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/f1e85fbacc206f75936444f322c83c96.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="软链接和硬链接"></p>
+<p><img src="https://imgnothing.top/images/f1e85fbacc206f75936444f322c83c96.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="软链接和硬链接"></p>
 <h3 id="pnpm的目录结构"><a href="#pnpm的目录结构" class="headerlink" title="pnpm的目录结构"></a>pnpm的目录结构</h3><p>pnpm通过软链接、硬链接以及全局依赖库来组织目录结构，从而解决了分身问题和幽灵依赖。</p>
 <p>pnpm将所有的包都安装在全局的 .pnpm-store 目录中（具体路径通过 <code>pnpm store path</code>查询），这是全局依赖库，以下称为store。所有项目的所需依赖都通过硬链接的方式从store链接到node_modules的.pnpm目录中，再用软连接，将.pnpm中的顶层依赖链接到node_modules目录下。</p>
-<p>一个简单的例子：<a href="mailto:&#x64;&#101;&#109;&#111;&#45;&#98;&#97;&#x7a;&#64;&#49;&#x2e;&#48;&#x2e;&#48;">&#x64;&#101;&#109;&#111;&#45;&#98;&#97;&#x7a;&#64;&#49;&#x2e;&#48;&#x2e;&#48;</a>和<a href="mailto:&#100;&#101;&#109;&#111;&#45;&#102;&#x6f;&#x6f;&#x40;&#49;&#46;&#48;&#x2e;&#49;">&#100;&#101;&#109;&#111;&#45;&#102;&#x6f;&#x6f;&#x40;&#49;&#46;&#48;&#x2e;&#49;</a>是经显式install的顶层依赖，demo-bar是它们的子依赖。</p>
+<p>一个简单的例子：<a href="mailto:&#100;&#x65;&#109;&#x6f;&#45;&#x62;&#97;&#x7a;&#x40;&#49;&#x2e;&#48;&#46;&#x30;">&#100;&#x65;&#109;&#x6f;&#45;&#x62;&#97;&#x7a;&#x40;&#49;&#x2e;&#48;&#46;&#x30;</a>和<a href="mailto:&#x64;&#101;&#109;&#x6f;&#x2d;&#102;&#x6f;&#111;&#64;&#49;&#46;&#x30;&#46;&#49;">&#x64;&#101;&#109;&#x6f;&#x2d;&#102;&#x6f;&#111;&#64;&#49;&#46;&#x30;&#46;&#49;</a>是经显式install的顶层依赖，demo-bar是它们的子依赖。</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs awk">node_modules<br>└─ .pnpm<br>   └─ demo-bar@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span><br>      └─ node_modules<br>         └─ demo-bar -&gt; &lt;store&gt;/demo-bar<br>   └─ demo-bar@<span class="hljs-number">1.0</span>.<span class="hljs-number">1</span><br>      └─ node_modules<br>         └─ demo-bar -&gt; &lt;store&gt;/demo-bar<br>   └─ demo-baz@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span><br>      └─ node_modules<br>         ├─ demo-bar -&gt; ..<span class="hljs-regexp">/../</span>demo-bar@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span><span class="hljs-regexp">/node_modules/</span>demo-bar<br>         └─ demo-baz -&gt; &lt;store&gt;/demo-baz<br>   └─ demo-foo@<span class="hljs-number">1.0</span>.<span class="hljs-number">1</span><br>      └─ node_modules<br>         ├─ demo-bar -&gt; ..<span class="hljs-regexp">/../</span>demo-bar@<span class="hljs-number">1.0</span>.<span class="hljs-number">1</span><span class="hljs-regexp">/node_modules/</span>demo-bar<br>         └─ demo-foo -&gt; &lt;store&gt;/demo-foo<br>└─ demo-baz -&gt; .<span class="hljs-regexp">/pnpm/</span>demo-baz@<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span><span class="hljs-regexp">/node_modules/</span>demo-baz<br>└─ demo-foo -&gt; .<span class="hljs-regexp">/pnpm/</span>demo-foo@<span class="hljs-number">1.0</span>.<span class="hljs-number">1</span><span class="hljs-regexp">/node_modules/</span>demo-foo<br></code></pre></td></tr></table></figure>
 
 <p>好处：</p>

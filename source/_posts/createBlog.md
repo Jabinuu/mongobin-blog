@@ -3,8 +3,8 @@ title: 从0开始在云服务器上搭建Hexo博客
 date: 2023-03-20 23:23:01
 tags: [Hexo,云服务器, Git]
 categories: [Hexo博客]
-index_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
-banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
+index_img: https://imgnothing.top/images/createBlog.png
+banner_img: https://imgnothing.top/images/createBlog.png
 comment: true
 ---
 
@@ -53,13 +53,13 @@ comment: true
 
 
 
-![image-20230320213201932](http://182.44.49.100:34/images/2023/05/06/image-20230320213201932.png)
+![image-20230320213201932](https://imgnothing.top/images/image-20230320213201932.png)
 
 ​	将网站目录设置为如下（自定义即可）
 
 
 
-![image-20230320213344566](http://182.44.49.100:34/images/2023/05/06/image-20230320213344566.png)
+![image-20230320213344566](https://imgnothing.top/images/image-20230320213344566.png)
 
 ### 3.对服务器的Git进行搭建
 
@@ -90,7 +90,7 @@ ssh-keygen -t rsa -C "你刚刚设置的邮箱"
 
 
 
-![image-20230320211205195](http://182.44.49.100:34/images/2023/05/06/image-20230320211205195.png)
+![image-20230320211205195](https://imgnothing.top/images/image-20230320211205195.png)
 
 ​		通过配置ssh密钥，主机和服务器的git连接时将不再需要密码，简化了操作。
 
@@ -148,13 +148,13 @@ hexo s
 
 
 
-![image-20230320215235929](http://182.44.49.100:34/images/2023/05/06/image-20230320215235929.png)
+![image-20230320215235929](https://imgnothing.top/images/image-20230320215235929.png)
 
 #### 2.配置本地博客与服务器git的连接
 
 ​	在刚才生成的博客文件夹根目录中找到并打开`_config.yml`文件，把最下面的depoly处改为如下内容，目的是与服务器git仓库建立连接。
 
-![image-20230320220031029](http://182.44.49.100:34/images/2023/05/06/image-20230320220031029.png)
+![image-20230320220031029](https://imgnothing.top/images/image-20230320220031029.png)
 
 ​	**注意：**
 

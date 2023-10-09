@@ -23,20 +23,20 @@
 <meta property="og:site_name" content="Mongobin">
 <meta property="og:description" content="前言在讲述事件循环和消息队列之前，需要了解 JS 的单线程执行机制，JS 的执行是从上到下依次执行的，这些便是同步任务，而 ES6 引入了 Promise 对象，使得异步任务开始频频出现在 JS 的代码中。 异步任务不同于顺序执行的同步任务，他对于 JS 运行时来说是一个黑盒，无法预知他究竟什么时候会被执行，因为这取决于异步任务何时从消息队列中出队执行，而消息队列中的异步任务是否出队，则与事件循环">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329214757221.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329220338191.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/htmlDOM.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/_20230411173336.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329230708934.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/_20230411174231.png">
-<meta property="og:image" content="http://182.44.49.100:34/images/2023/05/06/3787d04fe1672d3115116a6d2125f964.png">
+<meta property="og:image" content="https://imgnothing.top/images/image-20230329211758826.png">
+<meta property="og:image" content="https://imgnothing.top/images/image-20230329214757221.png">
+<meta property="og:image" content="https://imgnothing.top/images/image-20230329220338191.png">
+<meta property="og:image" content="https://imgnothing.top/images/htmlDOM.png">
+<meta property="og:image" content="https://imgnothing.top/images/_20230411173336.png">
+<meta property="og:image" content="https://imgnothing.top/images/image-20230329230708934.png">
+<meta property="og:image" content="https://imgnothing.top/images/_20230411174231.png">
+<meta property="og:image" content="https://imgnothing.top/images/3787d04fe1672d3115116a6d2125f964.png">
 <meta property="article:published_time" content="2023-03-29T15:16:15.000Z">
-<meta property="article:modified_time" content="2023-05-06T09:19:05.731Z">
+<meta property="article:modified_time" content="2023-10-09T14:43:20.909Z">
 <meta property="article:author" content="Jabin">
 <meta property="article:tag" content="浏览器架构">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png">
+<meta name="twitter:image" content="https://imgnothing.top/images/image-20230329211758826.png">
   
   
   
@@ -230,7 +230,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('http://182.44.49.100:34/images/2023/05/06/createBlog.png') no-repeat center center; background-size: cover;">
+     style="background: url('https://imgnothing.top/images/createBlog.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -350,7 +350,7 @@
 <p>但是由于这些任务在现在操作系统中越来越复杂，例如把网络、存储、渲染这些任务放在一个线程中，执行效率和性能越来越低下（比如有一些网页的代码存在内存泄露，即便关闭这些网页线程，进程中的这块内存也无法被回收，除非关闭浏览器，否则越用越卡），且无法再向下拆分出类似线程的子空间，因为线程已经是最小的执行单位。</p>
 <p>因此，为了强化浏览器的各个复杂功能，出现了多进程架构的浏览器，可以将网络、存储、渲染、IO、插件这些复杂任务分配给一个个单独的进程，这样每个进程又能向下拆分出多个线程，极大程度上强化了浏览器。</p>
 <h3 id="理解Chrome的多进程架构"><a href="#理解Chrome的多进程架构" class="headerlink" title="理解Chrome的多进程架构"></a>理解Chrome的多进程架构</h3><p>Chrome也是基于多进程架构的现代浏览器，Chrome的主要进程组成如下：</p>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329211758826"></p>
+<p><img src="https://imgnothing.top/images/image-20230329211758826.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329211758826"></p>
 <ul>
 <li><p>Browser 进程：Tab之外的一切都有该进程处理。负责地址栏、书签栏、前进后退、网络请求、文件访问等；</p>
 </li>
@@ -364,9 +364,9 @@
 </blockquote>
 </li>
 </ul>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329214757221.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329214757221"></p>
+<p><img src="https://imgnothing.top/images/image-20230329214757221.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329214757221"></p>
 <p>Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 Tab 就意味着有三个不同的 Renderer 进程这样可以保证多个 Tab 之间互不影响，即使其中一个 Tab 没有响应，也不影响其他 Tab 的正常执行。然而，由于进程是 OS 中拥有资源的独立单位，多个 Tab 之间的数据是非共享的，这也意味着多个 Tab 都会有相同的 V8引擎初始化数据，这意味着更多的内存使用。</p>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329220338191.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329220338191"></p>
+<p><img src="https://imgnothing.top/images/image-20230329220338191.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329220338191"></p>
 <h3 id="了解-Browser-浏览器进程"><a href="#了解-Browser-浏览器进程" class="headerlink" title="了解 Browser 浏览器进程"></a>了解 Browser 浏览器进程</h3><p>简单来说，在浏览器中，Tab之外的一切都归浏览器进程所接管，它包含3个主要的线程：</p>
 <ul>
 <li>UI thread UI线程：负责绘制和管理浏览器的按钮和输入框区域。</li>
@@ -403,7 +403,7 @@
 <li><p>下载外部资源：如果HTML中由需要加载<strong>外部资源</strong>的标签，这在解析HTML构建DOM树之前会由<strong>预加载扫描线程</strong>检测到，并<strong>提前</strong>利用 Browser 线程的 Network 线程来下载<code>&lt;img/&gt;</code>、CSS和 JS的<code>&lt;link&gt;</code>等渲染DOM需要的外部资源文件，这减少了解析 HTML 的阻塞时间</p>
 </li>
 <li><p>解析HTML：由 HTML<strong>解析器</strong>解析 HTML 内容，首先由<strong>分词器</strong>检测出各个标签名，我们称他们为token，然后利用token栈和括号匹配算法，构建出DOM树。同时会根据外部、内部和内联 CSS 样式计算得到 CSSOM 树。</p>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/htmlDOM.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="根据html文档生成DOM树"></p>
+<p><img src="https://imgnothing.top/images/htmlDOM.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="根据html文档生成DOM树"></p>
 </li>
 <li><p>计算CSS样式：主线程根据 CSSOM 树进行CSS属性值的计算，并将计算后的样式添加到DOM树的对应DOM节点上。</p>
 <blockquote>
@@ -416,17 +416,17 @@
 <p>:label:布局树通常情况下与DOM树结构并不相同。由于布局树只考虑存在位置和尺寸这样的<strong>几何信息</strong>的DOM元素，所以<code>display:none</code>的DOM元素在构建布局树时是不被考虑的，类似的，还有一些伪元素，匿名行盒，匿名块盒…..</p>
 <p>:man_teacher: W3C规定：标签的文本必须被包含在行盒中；行盒和块盒不能相邻。因此用匿名行盒和匿名块盒来适应这个规定</p>
 </blockquote>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/_20230411173336.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="微信截图_20230411173336"></p>
+<p><img src="https://imgnothing.top/images/_20230411173336.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="微信截图_20230411173336"></p>
 </li>
 <li><p><strong>分层</strong>（Layer）：主线程会使用一套复杂的策略对整个布局树中进行分层。分层的好处在于，将来某一个层发生改变后，仅会对该层进行后续处理，从而提升效率</p>
 <blockquote>
 <p>滚动条、层叠上下文（z-index）、transform、opacity 等样式都会或多或少的影响分层结果，也可以通过<code>will-change</code>属性更大程度的影响分层结构。</p>
 <p>分层不是越多越好，层数太多会导致占用大量的内存空间，因为浏览器会根据内存和效率权衡分层的数量。</p>
 </blockquote>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/image-20230329230708934.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329230708934"></p>
+<p><img src="https://imgnothing.top/images/image-20230329230708934.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="image-20230329230708934"></p>
 </li>
 <li><p><strong>计算绘制指令集</strong>（paint）：主线程会为每个层单独产生绘制指令集，用于描述这个层的内容该如何一步步地画出来。完成此步后，主线程将绘制指令集交付给合成线程</p>
-<p><img src="http://182.44.49.100:34/images/2023/05/06/_20230411174231.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="微信截图_20230411174231"></p>
+<p><img src="https://imgnothing.top/images/_20230411174231.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="微信截图_20230411174231"></p>
 </li>
 </ul>
 <h4 id="合成器线程"><a href="#合成器线程" class="headerlink" title="合成器线程"></a>合成器线程</h4><p>​    一旦确定了<strong>绘制指令集</strong>，主线程就会将该信息提交给合成器线程。然后，合成线程将对每个层进行分块并光栅化。一个层可以比视口要大，所以合成器线程将它们划分为瓦片（图块），并将每个瓦片发送到GPU进程，完成光栅化，并且在这个过程中优先光栅化靠近视口的区域，紧接着再去光栅化页面的其他区域。（tiling和raster）</p>
@@ -441,7 +441,7 @@
 <li>浏览器滚动时，合成线程会创建一个新的合成帧发送给 GPU，以显示到屏幕上，所以即便主线程卡死，也不影响页面滚动。</li>
 <li>合成线程工作与主线程无关，不用等待样式计算和 js 的执行，因此合成线程相关的动画比涉及到主线程重新计算样式和执行 js 的动画更加流畅</li>
 </ul>
-<h4 id="浏览器的渲染过程流程图"><a href="#浏览器的渲染过程流程图" class="headerlink" title="浏览器的渲染过程流程图"></a>浏览器的渲染过程流程图</h4><p><img src="http://182.44.49.100:34/images/2023/05/06/3787d04fe1672d3115116a6d2125f964.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="渲染流程图"></p>
+<h4 id="浏览器的渲染过程流程图"><a href="#浏览器的渲染过程流程图" class="headerlink" title="浏览器的渲染过程流程图"></a>浏览器的渲染过程流程图</h4><p><img src="https://imgnothing.top/images/3787d04fe1672d3115116a6d2125f964.png" srcset="https://imgnothing.top/images/loading.gif" lazyload alt="渲染流程图"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/inside-browser-part1/">Inside look at modern web browser (part 1)</a></p>
 <p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904193367474184">浅谈浏览器架构、单线程js、事件循环、消息队列、宏任务和微任务</a></p>
 <p><a target="_blank" rel="noopener" href="https://developer.chrome.com/blog/inside-browser-part2/">Inside look at modern web browser (part 2)</a></p>

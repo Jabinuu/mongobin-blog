@@ -109,7 +109,7 @@ node_modules
 
 
 
-![软链接和硬链接](http://182.44.49.100:34/images/2023/05/06/f1e85fbacc206f75936444f322c83c96.png)
+![软链接和硬链接](https://imgnothing.top/images/f1e85fbacc206f75936444f322c83c96.png)
 
 ### pnpm的目录结构
 

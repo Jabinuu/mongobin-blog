@@ -84,10 +84,10 @@ categories: [vue2]
 
 典型的上中下结构
 
-![组件结构](http://182.44.49.100:34/images/2023/05/06/99a042307be2e6e58cd703214d0c07a4.png)
+![组件结构](https://imgnothing.top/images/99a042307be2e6e58cd703214d0c07a4.png)
 
 
 
 ### 技术点
 
-![技术点](http://182.44.49.100:34/images/2023/05/06/7801634e91006adb2b0a329401f8cbba.png)
+![技术点](https://imgnothing.top/images/7801634e91006adb2b0a329401f8cbba.png)

@@ -3,8 +3,8 @@ title: JS的各种类型继承模式总结
 date: 2023-05-07 10:51:31
 tags: [类型继承,原型,寄生式组合继承]
 categories: [JavaScript]
-index_img: http://182.44.49.100:34/images/20230507171452.png
-banner_img: http://182.44.49.100:34/images/20230507171452.png
+index_img: https://imgnothing.top/images/createBlog.png
+banner_img: https://imgnothing.top/images/createBlog.png
 ---
 
 # 原型式继承
@@ -25,7 +25,7 @@ banner_img: http://182.44.49.100:34/images/20230507171452.png
   console.log(sub);
 ```
 
-![image-20230507160253096](http://182.44.49.100:34/images/image-20230507160253096.png)
+![image-20230507160253096](https://imgnothing.top/images/image-20230507160253096.png)
 
 > 记住`create()`这个函数，下文的代码中会反复用到
 
@@ -91,7 +91,7 @@ function SupType(){
   console.log(sub);
 ```
 
-![image-20230507160643061](http://182.44.49.100:34/images/image-20230507160643061.png)
+![image-20230507160643061](https://imgnothing.top/images/image-20230507160643061.png)
 
 综合了原型链和盗用构造函数，使得子类型的实例既可以实现方法重用，又可以拥有自己的属性数据
 
@@ -132,7 +132,7 @@ function SupType(){
 
 ```
 
-![image-20230507162321625](http://182.44.49.100:34/images/image-20230507162321625.png)
+![image-20230507162321625](https://imgnothing.top/images/image-20230507162321625.png)
 
 可以看到**没有了冗余**的父类型属性，而且不同的子类型示例**可以重用**同一个父类型的方法。
 

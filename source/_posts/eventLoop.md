@@ -3,7 +3,7 @@ title: 事件循环和消息队列（二）
 date: 2023-03-30 21:27:54
 tags: [事件循环,消息队列,微队列,交互队列,延时队列,异步任务]
 categories: [浏览器原理]
-banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
+banner_img: https://imgnothing.top/images/createBlog.png
 ---
 
 ## 前言
@@ -45,7 +45,7 @@ banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
 
 **整个过程，被称之为事件循环（在chrome源码中称为消息循环）**
 
-![image-20230507175003831](http://182.44.49.100:34/images/image-20230507175003831.png)
+![image-20230507175003831](https://imgnothing.top/images/image-20230507175003831.png)
 
 
 
@@ -81,25 +81,25 @@ banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
 
 
 
-![image-20230330211730822](http://182.44.49.100:34/images/2023/05/06/image-20230330211730822.png)
+![image-20230330211730822](https://imgnothing.top/images/image-20230330211730822.png)
 
 在主线程中引入事件循环
 
 
 
-![image-20230330211813118](http://182.44.49.100:34/images/2023/05/06/image-20230330211813118.png)
+![image-20230330211813118](https://imgnothing.top/images/image-20230330211813118.png)
 
 渲染进程的线程之间发送通知
 
 
 
-![image-20230330211910974](http://182.44.49.100:34/images/2023/05/06/image-20230330211910974.png)
+![image-20230330211910974](https://imgnothing.top/images/image-20230330211910974.png)
 
-![image-20230330211933941](http://182.44.49.100:34/images/2023/05/06/image-20230330211933941.png)
+![image-20230330211933941](https://imgnothing.top/images/image-20230330211933941.png)
 
 线程模型：消息队列、事件循环和跨进程发送信息
 
-![image-20230330212109012](http://182.44.49.100:34/images/2023/05/06/image-20230330212109012.png)
+![image-20230330212109012](https://imgnothing.top/images/image-20230330212109012.png)
 
 ### 参考
 

@@ -3,7 +3,7 @@ title: 事件循环和消息队列（一）
 date: 2023-03-29 23:16:15
 tags: [浏览器架构]
 categories: [JavaScript]
-banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
+banner_img: https://imgnothing.top/images/createBlog.png
 ---
 
 # 前言
@@ -33,7 +33,7 @@ banner_img: http://182.44.49.100:34/images/2023/05/06/createBlog.png
 
 Chrome也是基于多进程架构的现代浏览器，Chrome的主要进程组成如下：
 
-![image-20230329211758826](http://182.44.49.100:34/images/2023/05/06/image-20230329211758826.png)
+![image-20230329211758826](https://imgnothing.top/images/image-20230329211758826.png)
 
 + Browser 进程：Tab之外的一切都有该进程处理。负责地址栏、书签栏、前进后退、网络请求、文件访问等；
 
@@ -45,11 +45,11 @@ Chrome也是基于多进程架构的现代浏览器，Chrome的主要进程组�
 
   > 所有应用程序都要在OS的调度下基于CPU和GPU的计算才能运行。因为GPU要处理多个应用程序的的请求，浏览器的的GPU进程只是一个分量。GPU擅长处理图形，因此提供GPU计算的应用程序可以实现快速渲染和平滑交互。
 
-![image-20230329214757221](http://182.44.49.100:34/images/2023/05/06/image-20230329214757221.png)
+![image-20230329214757221](https://imgnothing.top/images/image-20230329214757221.png)
 
 Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 Tab 就意味着有三个不同的 Renderer 进程这样可以保证多个 Tab 之间互不影响，即使其中一个 Tab 没有响应，也不影响其他 Tab 的正常执行。然而，由于进程是 OS 中拥有资源的独立单位，多个 Tab 之间的数据是非共享的，这也意味着多个 Tab 都会有相同的 V8引擎初始化数据，这意味着更多的内存使用。
 
-![image-20230329220338191](http://182.44.49.100:34/images/2023/05/06/image-20230329220338191.png)
+![image-20230329220338191](https://imgnothing.top/images/image-20230329220338191.png)
 
 ### 了解 Browser 浏览器进程
 
@@ -94,7 +94,7 @@ Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 T
 
 + 解析HTML：由 HTML**解析器**解析 HTML 内容，首先由**分词器**检测出各个标签名，我们称他们为token，然后利用token栈和括号匹配算法，构建出DOM树。同时会根据外部、内部和内联 CSS 样式计算得到 CSSOM 树。
 
-  ![根据html文档生成DOM树](http://182.44.49.100:34/images/2023/05/06/htmlDOM.png)
+  ![根据html文档生成DOM树](https://imgnothing.top/images/htmlDOM.png)
 
 + 计算CSS样式：主线程根据 CSSOM 树进行CSS属性值的计算，并将计算后的样式添加到DOM树的对应DOM节点上。
 
@@ -108,7 +108,7 @@ Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 T
   >
   > :man_teacher: W3C规定：标签的文本必须被包含在行盒中；行盒和块盒不能相邻。因此用匿名行盒和匿名块盒来适应这个规定
 
-  ![微信截图_20230411173336](http://182.44.49.100:34/images/2023/05/06/_20230411173336.png)
+  ![微信截图_20230411173336](https://imgnothing.top/images/_20230411173336.png)
 
   
 
@@ -118,13 +118,13 @@ Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 T
   >
   > 分层不是越多越好，层数太多会导致占用大量的内存空间，因为浏览器会根据内存和效率权衡分层的数量。
 
-  ![image-20230329230708934](http://182.44.49.100:34/images/2023/05/06/image-20230329230708934.png)
+  ![image-20230329230708934](https://imgnothing.top/images/image-20230329230708934.png)
 
   
 
 + **计算绘制指令集**（paint）：主线程会为每个层单独产生绘制指令集，用于描述这个层的内容该如何一步步地画出来。完成此步后，主线程将绘制指令集交付给合成线程
 
-  ![微信截图_20230411174231](http://182.44.49.100:34/images/2023/05/06/_20230411174231.png)
+  ![微信截图_20230411174231](https://imgnothing.top/images/_20230411174231.png)
 
   
 
@@ -143,7 +143,7 @@ Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 T
 
 #### 浏览器的渲染过程流程图
 
-![渲染流程图](http://182.44.49.100:34/images/2023/05/06/3787d04fe1672d3115116a6d2125f964.png)
+![渲染流程图](https://imgnothing.top/images/3787d04fe1672d3115116a6d2125f964.png)
 
 
 
