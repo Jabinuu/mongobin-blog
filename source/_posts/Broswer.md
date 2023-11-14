@@ -88,7 +88,7 @@ Chrome 的每一个Tab 选项卡都拥有自己的 Renderer 进程，有三个 T
 
 #### 主线程的功能
 
-+ 执行 JS：主线程在遇到 `<script>` 标签时会阻塞HTML文档的解析，并必须先下载、解析和执行js代码，why？因为 js 可以用 `document.write()`之类的东西改变 DOM 结构。这就是为什么会暂停HTML的解析，并等待js代码执行完毕后才能恢复。
++ 执行 JS：主线程在遇到 `<script>` 标签时会阻塞HTML文档的解析，并必须先下载、解析和执行js代码，why？。因为浏览器需要一个稳定的 DOM 树结构，而 JavaScript 中的代码可能直接改变了 DOM 树的结构，甚至 直接使用 location.href 进行跳转，所以浏览器为了防止出现 JavaScript 改变 DOM 树的情况，会阻塞其他的下载和渲染。
 
 + 下载外部资源：如果HTML中由需要加载**外部资源**的标签，这在解析HTML构建DOM树之前会由**预加载扫描线程**检测到，并**提前**利用 Browser 线程的 Network 线程来下载`<img/>`、CSS和 JS的`<link>`等渲染DOM需要的外部资源文件，这减少了解析 HTML 的阻塞时间
 
